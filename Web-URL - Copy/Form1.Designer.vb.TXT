@@ -1,0 +1,472 @@
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+Partial Class Form1
+    Inherits System.Windows.Forms.Form
+
+    'Form overrides dispose to clean up the component list.
+    <System.Diagnostics.DebuggerNonUserCode()>
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    'NOTE: The following procedure is required by the Windows Form Designer
+    'It can be modified using the Windows Form Designer.  
+    'Do not modify it using the code editor.
+    <System.Diagnostics.DebuggerStepThrough()>
+    Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
+        Me.StartCmd = New System.Windows.Forms.Button()
+        Me.WV = New Microsoft.Web.WebView2.WinForms.WebView2()
+        Me.StopCMD = New System.Windows.Forms.Button()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.DOMTxt = New System.Windows.Forms.TextBox()
+        Me.ListBox2 = New System.Windows.Forms.ListBox()
+        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.DOMCATTxt = New System.Windows.Forms.TextBox()
+        Me.TryCountTxt = New System.Windows.Forms.TextBox()
+        Me.Button3 = New System.Windows.Forms.Button()
+        Me.UpdateCountTxt = New System.Windows.Forms.TextBox()
+        Me.PauseCHK = New System.Windows.Forms.CheckBox()
+        Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
+        Me.TextBox5 = New System.Windows.Forms.TextBox()
+        Me.TextBox6 = New System.Windows.Forms.TextBox()
+        Me.ResumeCHK = New System.Windows.Forms.CheckBox()
+        Me.AutoCHK = New System.Windows.Forms.CheckBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.UpdatedLbl = New System.Windows.Forms.Label()
+        Me.RecCountTxt = New System.Windows.Forms.TextBox()
+        Me.CountLbl = New System.Windows.Forms.Label()
+        Me.WCTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.DBGroup = New System.Windows.Forms.GroupBox()
+        Me.DB2CHK = New System.Windows.Forms.RadioButton()
+        Me.DB1CHK = New System.Windows.Forms.RadioButton()
+        Me.SkipITxt = New System.Windows.Forms.TextBox()
+        Me.SortCombo = New System.Windows.Forms.ComboBox()
+        Me.SortLbl = New System.Windows.Forms.Label()
+        Me.TLDLbl = New System.Windows.Forms.Label()
+        Me.TLDCombo = New System.Windows.Forms.ComboBox()
+        Me.SkipLbl = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.ProductCombo = New System.Windows.Forms.ComboBox()
+        Me.DOMLbl = New System.Windows.Forms.Label()
+        Me.DOMCATLbl = New System.Windows.Forms.Label()
+        Me.LikeTxt = New System.Windows.Forms.TextBox()
+        Me.LikeCHK = New System.Windows.Forms.CheckBox()
+        CType(Me.WV, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.DBGroup.SuspendLayout()
+        Me.SuspendLayout()
+        '
+        'StartCmd
+        '
+        Me.StartCmd.Location = New System.Drawing.Point(9, 59)
+        Me.StartCmd.Name = "StartCmd"
+        Me.StartCmd.Size = New System.Drawing.Size(59, 23)
+        Me.StartCmd.TabIndex = 3
+        Me.StartCmd.Text = "Start"
+        Me.StartCmd.UseVisualStyleBackColor = True
+        '
+        'WV
+        '
+        Me.WV.AllowExternalDrop = True
+        Me.WV.CreationProperties = Nothing
+        Me.WV.DefaultBackgroundColor = System.Drawing.Color.White
+        Me.WV.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.WV.Location = New System.Drawing.Point(0, 185)
+        Me.WV.Name = "WV"
+        Me.WV.Size = New System.Drawing.Size(1228, 740)
+        Me.WV.TabIndex = 15
+        Me.WV.ZoomFactor = 1.0R
+        '
+        'StopCMD
+        '
+        Me.StopCMD.Location = New System.Drawing.Point(74, 59)
+        Me.StopCMD.Name = "StopCMD"
+        Me.StopCMD.Size = New System.Drawing.Size(59, 23)
+        Me.StopCMD.TabIndex = 5
+        Me.StopCMD.Text = "Stop"
+        Me.StopCMD.UseVisualStyleBackColor = True
+        '
+        'Button2
+        '
+        Me.Button2.Location = New System.Drawing.Point(139, 59)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(59, 23)
+        Me.Button2.TabIndex = 7
+        Me.Button2.Text = "Button2"
+        Me.Button2.UseVisualStyleBackColor = True
+        '
+        'DOMTxt
+        '
+        Me.DOMTxt.Location = New System.Drawing.Point(649, 4)
+        Me.DOMTxt.Name = "DOMTxt"
+        Me.DOMTxt.Size = New System.Drawing.Size(567, 20)
+        Me.DOMTxt.TabIndex = 4
+        '
+        'ListBox2
+        '
+        Me.ListBox2.FormattingEnabled = True
+        Me.ListBox2.Location = New System.Drawing.Point(649, 55)
+        Me.ListBox2.Name = "ListBox2"
+        Me.ListBox2.Size = New System.Drawing.Size(567, 121)
+        Me.ListBox2.TabIndex = 2
+        '
+        'Timer1
+        '
+        Me.Timer1.Interval = 3000
+        '
+        'DOMCATTxt
+        '
+        Me.DOMCATTxt.Location = New System.Drawing.Point(649, 30)
+        Me.DOMCATTxt.Name = "DOMCATTxt"
+        Me.DOMCATTxt.Size = New System.Drawing.Size(567, 20)
+        Me.DOMCATTxt.TabIndex = 6
+        '
+        'TryCountTxt
+        '
+        Me.TryCountTxt.Location = New System.Drawing.Point(68, 88)
+        Me.TryCountTxt.Name = "TryCountTxt"
+        Me.TryCountTxt.Size = New System.Drawing.Size(60, 20)
+        Me.TryCountTxt.TabIndex = 8
+        '
+        'Button3
+        '
+        Me.Button3.Location = New System.Drawing.Point(204, 59)
+        Me.Button3.Name = "Button3"
+        Me.Button3.Size = New System.Drawing.Size(59, 23)
+        Me.Button3.TabIndex = 11
+        Me.Button3.Text = "Button3"
+        Me.Button3.UseVisualStyleBackColor = True
+        '
+        'UpdateCountTxt
+        '
+        Me.UpdateCountTxt.Location = New System.Drawing.Point(231, 88)
+        Me.UpdateCountTxt.Name = "UpdateCountTxt"
+        Me.UpdateCountTxt.Size = New System.Drawing.Size(60, 20)
+        Me.UpdateCountTxt.TabIndex = 9
+        '
+        'PauseCHK
+        '
+        Me.PauseCHK.AutoSize = True
+        Me.PauseCHK.Location = New System.Drawing.Point(400, 63)
+        Me.PauseCHK.Name = "PauseCHK"
+        Me.PauseCHK.Size = New System.Drawing.Size(56, 17)
+        Me.PauseCHK.TabIndex = 10
+        Me.PauseCHK.Text = "Pause"
+        Me.PauseCHK.UseVisualStyleBackColor = True
+        '
+        'Timer2
+        '
+        Me.Timer2.Interval = 2000
+        '
+        'TextBox5
+        '
+        Me.TextBox5.Location = New System.Drawing.Point(400, 5)
+        Me.TextBox5.Name = "TextBox5"
+        Me.TextBox5.Size = New System.Drawing.Size(35, 20)
+        Me.TextBox5.TabIndex = 12
+        Me.TextBox5.Text = "105"
+        '
+        'TextBox6
+        '
+        Me.TextBox6.Location = New System.Drawing.Point(400, 31)
+        Me.TextBox6.Name = "TextBox6"
+        Me.TextBox6.Size = New System.Drawing.Size(35, 20)
+        Me.TextBox6.TabIndex = 13
+        Me.TextBox6.Text = "185"
+        '
+        'ResumeCHK
+        '
+        Me.ResumeCHK.AutoSize = True
+        Me.ResumeCHK.Checked = True
+        Me.ResumeCHK.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.ResumeCHK.Location = New System.Drawing.Point(329, 63)
+        Me.ResumeCHK.Name = "ResumeCHK"
+        Me.ResumeCHK.Size = New System.Drawing.Size(65, 17)
+        Me.ResumeCHK.TabIndex = 17
+        Me.ResumeCHK.Text = "Resume"
+        Me.ResumeCHK.UseVisualStyleBackColor = True
+        '
+        'AutoCHK
+        '
+        Me.AutoCHK.AutoSize = True
+        Me.AutoCHK.Location = New System.Drawing.Point(275, 63)
+        Me.AutoCHK.Name = "AutoCHK"
+        Me.AutoCHK.Size = New System.Drawing.Size(48, 17)
+        Me.AutoCHK.TabIndex = 18
+        Me.AutoCHK.Text = "Auto"
+        Me.AutoCHK.UseVisualStyleBackColor = True
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(37, 91)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(25, 13)
+        Me.Label1.TabIndex = 19
+        Me.Label1.Text = "Try:"
+        '
+        'UpdatedLbl
+        '
+        Me.UpdatedLbl.AutoSize = True
+        Me.UpdatedLbl.Location = New System.Drawing.Point(174, 91)
+        Me.UpdatedLbl.Name = "UpdatedLbl"
+        Me.UpdatedLbl.Size = New System.Drawing.Size(51, 13)
+        Me.UpdatedLbl.TabIndex = 20
+        Me.UpdatedLbl.Text = "Updated:"
+        '
+        'RecCountTxt
+        '
+        Me.RecCountTxt.Location = New System.Drawing.Point(447, 88)
+        Me.RecCountTxt.Name = "RecCountTxt"
+        Me.RecCountTxt.Size = New System.Drawing.Size(60, 20)
+        Me.RecCountTxt.TabIndex = 22
+        Me.RecCountTxt.Text = "8,888,888"
+        '
+        'CountLbl
+        '
+        Me.CountLbl.AutoSize = True
+        Me.CountLbl.Location = New System.Drawing.Point(401, 91)
+        Me.CountLbl.Name = "CountLbl"
+        Me.CountLbl.Size = New System.Drawing.Size(45, 13)
+        Me.CountLbl.TabIndex = 23
+        Me.CountLbl.Text = "Record:"
+        '
+        'WCTimer
+        '
+        Me.WCTimer.Interval = 3000
+        '
+        'DBGroup
+        '
+        Me.DBGroup.Controls.Add(Me.DB2CHK)
+        Me.DBGroup.Controls.Add(Me.DB1CHK)
+        Me.DBGroup.Location = New System.Drawing.Point(471, 5)
+        Me.DBGroup.Name = "DBGroup"
+        Me.DBGroup.Size = New System.Drawing.Size(72, 67)
+        Me.DBGroup.TabIndex = 24
+        Me.DBGroup.TabStop = False
+        Me.DBGroup.Text = "DB"
+        '
+        'DB2CHK
+        '
+        Me.DB2CHK.AutoSize = True
+        Me.DB2CHK.Location = New System.Drawing.Point(7, 36)
+        Me.DB2CHK.Name = "DB2CHK"
+        Me.DB2CHK.Size = New System.Drawing.Size(49, 17)
+        Me.DB2CHK.TabIndex = 1
+        Me.DB2CHK.Text = "DB 2"
+        Me.DB2CHK.UseVisualStyleBackColor = True
+        '
+        'DB1CHK
+        '
+        Me.DB1CHK.AutoSize = True
+        Me.DB1CHK.Checked = True
+        Me.DB1CHK.Location = New System.Drawing.Point(7, 12)
+        Me.DB1CHK.Name = "DB1CHK"
+        Me.DB1CHK.Size = New System.Drawing.Size(49, 17)
+        Me.DB1CHK.TabIndex = 0
+        Me.DB1CHK.TabStop = True
+        Me.DB1CHK.Text = "DB 1"
+        Me.DB1CHK.UseVisualStyleBackColor = True
+        '
+        'SkipITxt
+        '
+        Me.SkipITxt.Location = New System.Drawing.Point(334, 88)
+        Me.SkipITxt.Name = "SkipITxt"
+        Me.SkipITxt.Size = New System.Drawing.Size(60, 20)
+        Me.SkipITxt.TabIndex = 25
+        '
+        'SortCombo
+        '
+        Me.SortCombo.FormattingEnabled = True
+        Me.SortCombo.Items.AddRange(New Object() {"None", "ASC", "DESC"})
+        Me.SortCombo.Location = New System.Drawing.Point(334, 4)
+        Me.SortCombo.Name = "SortCombo"
+        Me.SortCombo.Size = New System.Drawing.Size(60, 21)
+        Me.SortCombo.TabIndex = 26
+        Me.SortCombo.Text = "None"
+        '
+        'SortLbl
+        '
+        Me.SortLbl.AutoSize = True
+        Me.SortLbl.Location = New System.Drawing.Point(303, 7)
+        Me.SortLbl.Name = "SortLbl"
+        Me.SortLbl.Size = New System.Drawing.Size(29, 13)
+        Me.SortLbl.TabIndex = 27
+        Me.SortLbl.Text = "Sort:"
+        '
+        'TLDLbl
+        '
+        Me.TLDLbl.AutoSize = True
+        Me.TLDLbl.Location = New System.Drawing.Point(200, 7)
+        Me.TLDLbl.Name = "TLDLbl"
+        Me.TLDLbl.Size = New System.Drawing.Size(31, 13)
+        Me.TLDLbl.TabIndex = 29
+        Me.TLDLbl.Text = "TLD:"
+        '
+        'TLDCombo
+        '
+        Me.TLDCombo.FormattingEnabled = True
+        Me.TLDCombo.Items.AddRange(New Object() {"ALL", "COM", "GOV", "IP", "LEN2", "NET", "ORG"})
+        Me.TLDCombo.Location = New System.Drawing.Point(231, 4)
+        Me.TLDCombo.Name = "TLDCombo"
+        Me.TLDCombo.Size = New System.Drawing.Size(60, 21)
+        Me.TLDCombo.TabIndex = 28
+        Me.TLDCombo.Text = "ALL"
+        '
+        'SkipLbl
+        '
+        Me.SkipLbl.AutoSize = True
+        Me.SkipLbl.Location = New System.Drawing.Point(303, 91)
+        Me.SkipLbl.Name = "SkipLbl"
+        Me.SkipLbl.Size = New System.Drawing.Size(31, 13)
+        Me.SkipLbl.TabIndex = 30
+        Me.SkipLbl.Text = "Skip:"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(15, 7)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(47, 13)
+        Me.Label2.TabIndex = 32
+        Me.Label2.Text = "Product:"
+        '
+        'ProductCombo
+        '
+        Me.ProductCombo.FormattingEnabled = True
+        Me.ProductCombo.Items.AddRange(New Object() {"Symantec", "McAfee", "PaloAlto", "Fortinet", "Zscaler", "Cyren", "Forcepoint"})
+        Me.ProductCombo.Location = New System.Drawing.Point(68, 4)
+        Me.ProductCombo.Name = "ProductCombo"
+        Me.ProductCombo.Size = New System.Drawing.Size(121, 21)
+        Me.ProductCombo.TabIndex = 31
+        Me.ProductCombo.Text = "Symantec"
+        '
+        'DOMLbl
+        '
+        Me.DOMLbl.AutoSize = True
+        Me.DOMLbl.Location = New System.Drawing.Point(607, 7)
+        Me.DOMLbl.Name = "DOMLbl"
+        Me.DOMLbl.Size = New System.Drawing.Size(35, 13)
+        Me.DOMLbl.TabIndex = 33
+        Me.DOMLbl.Text = "DOM:"
+        '
+        'DOMCATLbl
+        '
+        Me.DOMCATLbl.AutoSize = True
+        Me.DOMCATLbl.Location = New System.Drawing.Point(603, 33)
+        Me.DOMCATLbl.Name = "DOMCATLbl"
+        Me.DOMCATLbl.Size = New System.Drawing.Size(40, 13)
+        Me.DOMCATLbl.TabIndex = 34
+        Me.DOMCATLbl.Text = "Result:"
+        '
+        'LikeTxt
+        '
+        Me.LikeTxt.Enabled = False
+        Me.LikeTxt.Location = New System.Drawing.Point(68, 31)
+        Me.LikeTxt.Name = "LikeTxt"
+        Me.LikeTxt.Size = New System.Drawing.Size(326, 20)
+        Me.LikeTxt.TabIndex = 35
+        Me.LikeTxt.Text = "%"
+        '
+        'LikeCHK
+        '
+        Me.LikeCHK.AutoSize = True
+        Me.LikeCHK.Location = New System.Drawing.Point(16, 33)
+        Me.LikeCHK.Name = "LikeCHK"
+        Me.LikeCHK.Size = New System.Drawing.Size(46, 17)
+        Me.LikeCHK.TabIndex = 36
+        Me.LikeCHK.Text = "Like"
+        Me.LikeCHK.UseVisualStyleBackColor = True
+        '
+        'Form1
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(1228, 925)
+        Me.Controls.Add(Me.LikeCHK)
+        Me.Controls.Add(Me.LikeTxt)
+        Me.Controls.Add(Me.DOMCATLbl)
+        Me.Controls.Add(Me.DOMLbl)
+        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.ProductCombo)
+        Me.Controls.Add(Me.SkipLbl)
+        Me.Controls.Add(Me.TLDLbl)
+        Me.Controls.Add(Me.TLDCombo)
+        Me.Controls.Add(Me.SortLbl)
+        Me.Controls.Add(Me.SortCombo)
+        Me.Controls.Add(Me.SkipITxt)
+        Me.Controls.Add(Me.DBGroup)
+        Me.Controls.Add(Me.CountLbl)
+        Me.Controls.Add(Me.RecCountTxt)
+        Me.Controls.Add(Me.UpdatedLbl)
+        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.AutoCHK)
+        Me.Controls.Add(Me.ResumeCHK)
+        Me.Controls.Add(Me.TextBox5)
+        Me.Controls.Add(Me.TextBox6)
+        Me.Controls.Add(Me.PauseCHK)
+        Me.Controls.Add(Me.UpdateCountTxt)
+        Me.Controls.Add(Me.Button3)
+        Me.Controls.Add(Me.TryCountTxt)
+        Me.Controls.Add(Me.DOMCATTxt)
+        Me.Controls.Add(Me.ListBox2)
+        Me.Controls.Add(Me.DOMTxt)
+        Me.Controls.Add(Me.Button2)
+        Me.Controls.Add(Me.StopCMD)
+        Me.Controls.Add(Me.WV)
+        Me.Controls.Add(Me.StartCmd)
+        Me.Name = "Form1"
+        Me.Text = "Form1"
+        CType(Me.WV, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.DBGroup.ResumeLayout(False)
+        Me.DBGroup.PerformLayout()
+        Me.ResumeLayout(False)
+        Me.PerformLayout()
+
+    End Sub
+    Friend WithEvents StartCmd As Button
+    Friend WithEvents WV As Microsoft.Web.WebView2.WinForms.WebView2
+    Friend WithEvents StopCMD As Button
+    Friend WithEvents Button2 As Button
+    Friend WithEvents DOMTxt As TextBox
+    Friend WithEvents ListBox2 As ListBox
+    Friend WithEvents Timer1 As Timer
+    Friend WithEvents DOMCATTxt As TextBox
+    Friend WithEvents TryCountTxt As TextBox
+    Friend WithEvents Button3 As Button
+    Friend WithEvents UpdateCountTxt As TextBox
+    Friend WithEvents PauseCHK As CheckBox
+    Friend WithEvents Timer2 As Timer
+    Friend WithEvents TextBox5 As TextBox
+    Friend WithEvents TextBox6 As TextBox
+    Friend WithEvents ResumeCHK As CheckBox
+    Friend WithEvents AutoCHK As CheckBox
+    Friend WithEvents Label1 As Label
+    Friend WithEvents UpdatedLbl As Label
+    Friend WithEvents RecCountTxt As TextBox
+    Friend WithEvents CountLbl As Label
+    Friend WithEvents WCTimer As Timer
+    Friend WithEvents DBGroup As GroupBox
+    Friend WithEvents DB2CHK As RadioButton
+    Friend WithEvents DB1CHK As RadioButton
+    Friend WithEvents SkipITxt As TextBox
+    Friend WithEvents SortCombo As ComboBox
+    Friend WithEvents SortLbl As Label
+    Friend WithEvents TLDLbl As Label
+    Friend WithEvents TLDCombo As ComboBox
+    Friend WithEvents SkipLbl As Label
+    Friend WithEvents Label2 As Label
+    Friend WithEvents ProductCombo As ComboBox
+    Friend WithEvents DOMLbl As Label
+    Friend WithEvents DOMCATLbl As Label
+    Friend WithEvents LikeTxt As TextBox
+    Friend WithEvents LikeCHK As CheckBox
+End Class

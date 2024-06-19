@@ -1,0 +1,966 @@
+﻿Imports System.Threading.Tasks
+Imports Microsoft.Web.WebView2.Core
+Imports System.Data
+Imports System.Data.OleDb
+
+
+Public Class Form1
+    Public CI As Integer, H As Integer, I As Integer, URLStr As String, LBStr As String, CValStr As String, WCValStr As String, UNURLStr As String, ReURLStr As String, DOMStr As String, T2Go As Boolean, VBStop As Boolean, CatCheckEngineStr As String
+    Public T2 As Integer, TLDQStr As String, VendorQStr As String, MAPSet As Boolean, WebCHK As Boolean, NoSiteSet As Boolean, SkipI As Integer
+    Public DBConStr As String, DBConn As ADODB.Connection, DBCMD As ADODB.Command, DBRS As ADODB.Recordset, DBSQL As String, RSI As Integer, SortStr As String
+
+    Private Declare Sub mouse_event Lib "user32" (ByVal dwFlags As Integer, ByVal dx As Integer, ByVal dy As Integer, ByVal cButtons As Integer, ByVal dwExtraInfo As Integer)
+
+    Private Sub SortCombo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles SortCombo.SelectedIndexChanged
+        Call SetFilterDBStr()
+    End Sub
+
+    Private Sub TLDCombo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TLDCombo.SelectedIndexChanged
+        Call SetFilterDBStr()
+    End Sub
+
+    Private Sub ProductCombo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ProductCombo.SelectedIndexChanged
+        Call SetFilterDBStr()
+    End Sub
+
+    Private Sub LikeCHK_CheckedChanged(sender As Object, e As EventArgs) Handles LikeCHK.CheckedChanged
+        If LikeCHK.Checked = True Then
+            LikeTxt.Enabled = True
+        Else
+            LikeTxt.Enabled = False
+            LikeTxt.Text = "%"
+        End If
+        Call SetFilterDBStr()
+    End Sub
+
+    Private Sub PauseCHK_CheckedChanged(sender As Object, e As EventArgs) Handles PauseCHK.CheckedChanged
+        If PauseCHK.Checked = False Then
+            SkipI = 0
+        End If
+    End Sub
+
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        'Me.MousePosition.X = 15
+        'Windows.Forms.Cursor.Position = New Point(Me.Left + TextBox5.Text, Me.Top + TextBox6.Text)
+
+        'mouse_event(&H2, 0, 0, 0, 0)
+        'mouse_event(&H4, 0, 0, 0, 0)
+        '75x605 = symantec search box
+        '750x605 = symantec search button
+        '85x420 = brightcloud search box
+        '85x480 = brightcloud check box
+        '150x555 = bright cloud search button
+        '180x510 = palo alto search box
+        '180x600 = palo alto check box
+        '1150x510 = palo alto search button
+        '370x510 = fortinet search box
+        '650x510 = fortinet search button
+        '150x535 = zscaler search box
+        '125x615 = zscaler search button
+
+
+        CI = 1 : I = 0 : H = 0 : T2 = 1 : SkipI = 0
+        PauseCHK.Checked = False
+        WebCHK = True
+        NoSiteSet = False
+        VBStop = False
+
+        If DB1CHK.Checked = True Then
+            DBConStr = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=F:\URLs\Z-URLs.accdb;Persist Security Info=False;"
+            'DBConStr = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=F:\URLs\10M-URLs.accdb;Persist Security Info=False;"
+        Else
+            DBConStr = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=F:\URLs\Z-URLs.accdb;Persist Security Info=False;"
+            'DBConStr = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=F:\URLs\10M-URLsR2.accdb;Persist Security Info=False;"
+        End If
+
+        DBConn = New ADODB.Connection
+        DBCMD = New ADODB.Command
+        DBRS = New ADODB.Recordset
+        DBConn.Open(DBConStr)
+        DBCMD.ActiveConnection = DBConn
+
+        DBSQL = "Select * from [10M-URLS] WHERE ((([10M-URLs].SBaseURI) is null))"
+
+        DBCMD.CommandText = DBSQL
+        DBRS.LockType = ADODB.LockTypeEnum.adLockOptimistic
+        DBRS.Open(DBCMD.CommandText, DBConStr, ADODB.CursorTypeEnum.adOpenStatic)
+        RecCountTxt.Text = DBRS.RecordCount
+
+        Timer1.Enabled = False
+        Timer2.Enabled = False
+        WCTimer.Enabled = True
+
+
+    End Sub
+
+    Private Sub WCTimer_Tick(sender As Object, e As EventArgs) Handles WCTimer.Tick
+
+        If CI = 1 Then
+            NoSiteSet = False
+            LBStr = DBRS.Fields(1).Value
+            DOMTxt.Text = LBStr
+            Me.WV.CoreWebView2.Navigate(LBStr)
+        End If
+
+        If CI = 3 Then
+            If DBRS.EOF = True Or Len(DBRS.Fields(1).Value) < 2 Then
+                Exit Sub
+            Else
+                CI = 0
+                I = I + 1
+                DBRS.MoveNext()
+                TryCountTxt.Text = I
+                UpdateCountTxt.Text = ListBox2.Items.Count
+                ListBox2.SelectedIndex = ListBox2.Items.Count - 1
+                SkipITxt.Text = SkipI
+            End If
+        End If
+
+        If I = 5001 Then
+            WCTimer.Enabled = False
+
+        End If
+
+        CI = CI + 1
+
+
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        'BrightCloud
+        'URLStr = "https://brightcloud.com/tools/url-ip-lookup.php"
+        'Me.WV.CoreWebView2.Navigate(URLStr)
+
+        'LBStr = TextBox1.Text
+        'URLStr = "https://brightcloud.com/tools/url-ip-lookup.php" & LBStr
+        'WV.Select()
+        'SendKeys.Send(TextBox1.Text)
+        'SendKeys.Send("{Tab}")
+        'SendKeys.Send("{Enter}")
+        'SendKeys.Send("{Tab}")
+        'SendKeys.Send("{Tab}")
+        'SendKeys.Send("{Tab}")
+        'SendKeys.Send("{Enter}")
+        'Timer2.Enabled = False
+        'T2 = T2 + 1
+
+        'Fortinet
+        'URLStr = "https://www.fortiguard.com/webfilter"
+        'Me.WV.CoreWebView2.Navigate(URLStr)
+        'WV.Select()
+        'SendKeys.Send("{Tab}")
+        'SendKeys.Send("{Tab}")
+        'SendKeys.Send("{Tab}")
+        'SendKeys.Send("{Tab}")
+        'SendKeys.Send("{Tab}")
+        'SendKeys.Send("{Tab}")
+        'SendKeys.Send("{Tab}")
+        'SendKeys.Send("{Tab}")
+        'SendKeys.Send("{Tab}")
+        'SendKeys.Send("{Tab}")
+        'SendKeys.Send("{Tab}")
+        'SendKeys.Send(TextBox1.Text)
+        'SendKeys.Send("{Enter}")
+
+        'Zscaler
+        'URLStr = "https://www.sitereview.zscaler.com/"
+        'Me.WV.CoreWebView2.Navigate(URLStr)
+        'WV.Select()
+        'SendKeys.Send("{Tab}")
+        'SendKeys.Send(TextBox1.Text)
+        'SendKeys.Send("{Tab}")
+        'SendKeys.Send("{Tab}")
+        'SendKeys.Send("{Enter}")
+
+        'https://www.netskope.com/url-lookup
+        'https://talosintelligence.com/reputation_center/
+        'https://global.sitesafety.trendmicro.com/index.php
+        'https://www.cyren.com/security-center/url-category-check-gate  ' SLOW
+
+        'URLStr = "https://sitelookup.mcafee.com/"
+        'https://sitelookup.mcafee.com/en/feedback/url
+        'Me.WV.CoreWebView2.Navigate(URLStr)
+
+        'Me.WV.Source = New Uri("https://www.cyren.com/security-center/url-category-check-gate")
+        'URLStr = "https://www.cyren.com/security-center/url-category-check-gate"
+
+
+        'T2 = 1
+        'T2Go = True
+        'VBStop = False
+        'Timer2.Enabled = True
+
+        Windows.Forms.Cursor.Position = New Point(Me.Left + TextBox5.Text, Me.Top + TextBox6.Text)
+
+
+    End Sub
+
+    Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
+        If T2 = 2 Then
+            Windows.Forms.Cursor.Position = New Point(Me.Left + 200, Me.Top + 580) ' move mouse to mcafee product list box
+        End If
+
+        If T2 = 3 Then
+            mouse_event(&H2, 0, 0, 0, 0)
+            mouse_event(&H4, 0, 0, 0, 0)
+        End If
+
+        If T2 = 4 Then
+            Windows.Forms.Cursor.Position = New Point(Me.Left + 200, Me.Top + 688) ' move mouse to mcafee product
+        End If
+
+        If T2 = 5 Then
+            mouse_event(&H2, 0, 0, 0, 0)
+            mouse_event(&H4, 0, 0, 0, 0)
+        End If
+
+        If T2 = 6 Then
+            Windows.Forms.Cursor.Position = New Point(Me.Left + 200, Me.Top + 645) ' move mouse to mcafee search box
+        End If
+
+        If T2 = 7 Then
+            mouse_event(&H2, 0, 0, 0, 0)
+            mouse_event(&H4, 0, 0, 0, 0)
+        End If
+
+        If T2 = 8 Then
+            SendKeys.Send(LBStr)
+        End If
+
+        If T2 = 9 Then
+            Windows.Forms.Cursor.Position = New Point(Me.Left + 180, Me.Top + 700) ' move mouse to mcafee search button
+            mouse_event(&H2, 0, 0, 0, 0)
+            mouse_event(&H4, 0, 0, 0, 0)
+        End If
+
+        If T2 = 6 Then
+            Timer2.Enabled = False
+            T2 = 1
+            MAPSet = True
+        End If
+
+        If T2 < 6 Then
+            T2 = T2 + 1
+        End If
+
+    End Sub
+
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Me.WV.Source = New Uri("https://sitereview.bluecoat.com/#/")
+        CI = 1 : I = 0 : SkipI = 0
+        ListBox2.Items.Clear()
+        T2Go = False : WebCHK = False
+        CatCheckEngineStr = "Symantec"
+        TLDQStr = "([10M-URLs].TLD) Like '%')"
+        VendorQStr = "([10M-URLs].BCCAT) is null)"
+
+        'DBConStr = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=F:\URLs\10M-URLs.accdb;Persist Security Info=False;"
+        'DBConStr = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=F:\URLs\10M-URLsR2.accdb;Persist Security Info=False;"
+        'DBSQL = "Select * from [10M-URLS] WHERE ((([10M-URLs].TLD)='com') and (([10M-URLs].BCCAT) is null))"
+
+        'DBConn = New ADODB.Connection
+        'DBCMD = New ADODB.Command
+        'DBRS = New ADODB.Recordset
+        'DBConn.Open(DBConStr)
+        'DBCMD.ActiveConnection = DBConn
+
+        VBStop = False
+    End Sub
+
+    Private Sub SetFilterDBStr()
+        Select Case SortCombo.Text
+            Case "None"
+                SortStr = ""
+            Case "ASC"
+                SortStr = " ORDER BY [10M-URLs].DOM ASC"
+            Case "DESC"
+                SortStr = " ORDER BY [10M-URLs].DOM DESC"
+        End Select
+
+        Select Case TLDCombo.Text
+            Case "ALL"
+                TLDQStr = "(([10M-URLs].TLD) Like '%')"
+            Case "COM"
+                TLDQStr = "(([10M-URLs].TLD)='com')"
+            Case "GOV"
+                TLDQStr = "(([10M-URLs].TLD)='gov')"
+            Case "IP"
+                TLDQStr = "(([10M-URLs].TLD)='IP')"
+            Case "LEN2"
+                TLDQStr = "(LEN([10M-URLs].TLD)=2)"
+            Case "NET"
+                TLDQStr = "(([10M-URLs].TLD)='net')"
+            Case "ORG"
+                TLDQStr = "(([10M-URLs].TLD)='org')"
+        End Select
+
+        If LikeCHK.Checked = True Then
+            DOMStr = " and [10M-URLs].DOM Like '" & LikeTxt.Text & "%'"
+        Else DOMStr = ""
+        End If
+
+        Select Case ProductCombo.Text
+            Case "Symantec"
+                CatCheckEngineStr = "Symantec"
+                Me.WV.Source = New Uri("https://sitereview.bluecoat.com/#/")
+                URLStr = "https://sitereview.bluecoat.com/#/"
+                VendorQStr = "(([10M-URLs].BCCAT) is null)"
+            Case "McAfee"
+                CatCheckEngineStr = "McAfee"
+                Me.WV.Source = New Uri("https://sitelookup.mcafee.com/")
+                URLStr = "https://sitelookup.mcafee.com/"
+                VendorQStr = "(([10M-URLs].MACAT) is null)"
+            Case "PaloAlto"
+                CatCheckEngineStr = "PaloAlto"
+                Me.WV.Source = New Uri("https://urlfiltering.paloaltonetworks.com/")
+                URLStr = "https://urlfiltering.paloaltonetworks.com/"
+                VendorQStr = "(([10M-URLs].PACAT) is null)"
+            Case "Fortinet"
+                CatCheckEngineStr = "Fortinet"
+                Me.WV.Source = New Uri("https://www.fortiguard.com/webfilter")
+                URLStr = "https://www.fortiguard.com/webfilter"
+                VendorQStr = "(([10M-URLs].FNCAT) is null)"
+            Case "Zscaler"
+                CatCheckEngineStr = "Zscaler"
+                Me.WV.Source = New Uri("https://sitereview.zscaler.com/")
+                URLStr = "https://sitereview.zscaler.com/"
+                VendorQStr = "(([10M-URLs].ZCAT) is null)"
+            Case "Cyren"
+                CatCheckEngineStr = "Cyren"
+                Me.WV.Source = New Uri("https://www.cyren.com/security-center/url-category-check-gate")
+                URLStr = "https://www.cyren.com/security-center/url-category-check-gate"
+                VendorQStr = "(([10M-URLs].CYRENCAT) is null)"
+        End Select
+
+        DBSQL = "Select * from [10M-URLS] WHERE (" & TLDQStr & " and " & VendorQStr & DOMStr & ")" & SortStr
+
+    End Sub
+
+    Private Sub GetCatCheckEngine()
+        'If SymantecCHK.Checked = True Then
+        'CatCheckEngineStr = "SymantecCHK"
+        'Me.WV.Source = New Uri("https://sitereview.bluecoat.com/#/")
+        'URLStr = "https://sitereview.bluecoat.com/#/"
+        ''Me.WV.CoreWebView2.Navigate(URLStr)
+        'VendorQStr = "(([10M-URLs].BCCAT) is null)"
+        'End If
+        'If McAfeeCHK.Checked = True Then
+        'CatCheckEngineStr = "McAfeeCHK"
+        'Me.WV.Source = New Uri("https://sitelookup.mcafee.com/")
+        'URLStr = "https://sitelookup.mcafee.com/"
+        'VendorQStr = "(([10M-URLs].MACAT) is null)"
+        'End If
+        'If PaloAltoCHK.Checked = True Then
+        'CatCheckEngineStr = "PaloAltoCHK"
+        'Me.WV.Source = New Uri("https://urlfiltering.paloaltonetworks.com/")
+        'URLStr = "https://urlfiltering.paloaltonetworks.com/"
+        'VendorQStr = "(([10M-URLs].PACAT) is null)"
+        'End If
+        'If FortinetCHK.Checked = True Then
+        'CatCheckEngineStr = "FortinetCHK"
+        'Me.WV.Source = New Uri("https://www.fortiguard.com/webfilter")
+        'URLStr = "https://www.fortiguard.com/webfilter"
+        ''Me.WV.CoreWebView2.Navigate(URLStr)
+        'VendorQStr = "(([10M-URLs].FNCAT) is null)"
+        'End If
+        'If ZscalerCHK.Checked = True Then
+        'CatCheckEngineStr = "ZscalerCHK"
+        'Me.WV.Source = New Uri("https://sitereview.zscaler.com/")
+        'URLStr = "https://sitereview.zscaler.com/"
+        ''Me.WV.CoreWebView2.Navigate(URLStr)  ' old code
+        'VendorQStr = "(([10M-URLs].ZCAT) is null)"
+        'End If
+        'If CyrenCHK.Checked = True Then
+        'CatCheckEngineStr = "CyrenCHK"
+        'Me.WV.Source = New Uri("https://www.cyren.com/security-center/url-category-check-gate")
+        'URLStr = "https://www.cyren.com/security-center/url-category-check-gate"
+        ''Me.WV.CoreWebView2.Navigate(URLStr)  ' old code
+        'VendorQStr = "(([10M-URLs].CYRENCAT) is null)"
+        'End If
+
+
+        'If TLDAll.Checked = True Then TLDQStr = "(([10M-URLs].TLD) Like '%')"
+        'If TLDCOM.Checked = True Then TLDQStr = "(([10M-URLs].TLD)='com')"
+        'If TLDORG.Checked = True Then TLDQStr = "(([10M-URLs].TLD)='org')"
+        'If TLDNET.Checked = True Then TLDQStr = "(([10M-URLs].TLD)='net')"
+        'If TLDGOV.Checked = True Then TLDQStr = "(([10M-URLs].TLD)='gov')"
+        'If TLDLEN2.Checked = True Then TLDQStr = "(LEN([10M-URLs].TLD)=2)"
+
+        'If SortNone.Checked = True Then SortStr = ""
+        'If SortASC.Checked = True Then SortStr = " ORDER BY [10M-URLs].DOM ASC"
+        'If SortDESC.Checked = True Then SortStr = " ORDER BY [10M-URLs].DOM DESC"
+
+        'DBSQL = "Select * from [10M-URLS] WHERE (" & TLDQStr & " and " & VendorQStr & ")" & SortStr
+
+    End Sub
+
+    Private Sub StartCMD_Click(sender As Object, e As EventArgs) Handles StartCmd.Click
+        CI = 1 : I = 0 : H = 0 : T2 = 1 : SkipI = 0
+        PauseCHK.Checked = False
+        VBStop = False
+        T2Go = True
+        MAPSet = False
+        Call SetFilterDBStr()
+
+        'If SymantecCHK.Checked = True Then DBCMD.CommandText = "Select * from [10M-URLS] WHERE ((([10M-URLs].TLD)='com') and (([10M-URLs].BCCAT) is null))"
+
+        If DB1CHK.Checked = True Then
+            DBConStr = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=F:\URLs\Z-URLs.accdb;Persist Security Info=False;"
+            'DBConStr = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=F:\URLs\10M-URLs.accdb;Persist Security Info=False;"
+        Else
+            DBConStr = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=F:\URLs\Z-URLs.accdb;Persist Security Info=False;"
+            'DBConStr = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=F:\URLs\10M-URLsR2.accdb;Persist Security Info=False;"
+        End If
+
+        DBConn = New ADODB.Connection
+        DBCMD = New ADODB.Command
+        DBRS = New ADODB.Recordset
+        DBConn.Open(DBConStr)
+        DBCMD.ActiveConnection = DBConn
+
+
+        DBCMD.CommandText = DBSQL
+        DBRS.LockType = ADODB.LockTypeEnum.adLockOptimistic
+        DBRS.Open(DBCMD.CommandText, DBConStr, ADODB.CursorTypeEnum.adOpenStatic)
+        RecCountTxt.Text = DBRS.RecordCount
+
+        Timer1.Enabled = True
+
+    End Sub
+
+    Private Sub StopCMD_Click(sender As Object, e As EventArgs) Handles StopCMD.Click
+        VBStop = True
+    End Sub
+
+    Private Async Sub WV_NavigationCompletedAsync(sender As Object, e As CoreWebView2NavigationCompletedEventArgs) Handles WV.NavigationCompleted
+        Dim MCVal
+        Dim STitleStr As String, SDescStr As String, SKeyWordStr As String
+
+
+        If WebCHK = True Then
+            Dim HCI As Integer, HCStr As String, HC2Str As String, BaseStr As String
+            STitleStr = "null"
+            SDescStr = "null"
+            SKeyWordStr = "null"
+            BaseStr = "No Site"
+            If NoSiteSet = True Then Exit Sub
+
+            If e.IsSuccess = True Then
+
+                BaseStr = Await WV.ExecuteScriptAsync("document.querySelector('HEAD').baseURI;")
+                BaseStr = BaseStr.Trim(Chr(34))
+
+                For HCI = 0 To 50
+                    HCStr = Await WV.ExecuteScriptAsync("document.querySelector('HEAD').childNodes[" & HCI & "].name;")
+                    HC2Str = Await WV.ExecuteScriptAsync("document.querySelector('HEAD').childNodes[" & HCI & "].nodeName;")
+                    HCStr = HCStr.Trim(Chr(34))
+                    HC2Str = HC2Str.Trim(Chr(34))
+
+                    If HC2Str = "TITLE" Then
+                        STitleStr = Await WV.ExecuteScriptAsync("document.querySelector('HEAD').childNodes[" & HCI & "].innerText;")
+                    End If
+                    If HCStr = "description" Then
+                        SDescStr = Await WV.ExecuteScriptAsync("document.querySelector('HEAD').childNodes[" & HCI & "].content;")
+                    End If
+                    If HCStr = "keywords" Then
+                        SKeyWordStr = Await WV.ExecuteScriptAsync("document.querySelector('HEAD').childNodes[" & HCI & "].content;")
+                    End If
+                Next
+                STitleStr = STitleStr.Trim(Chr(34))
+                SDescStr = SDescStr.Trim(Chr(34))
+                SKeyWordStr = SKeyWordStr.Trim(Chr(34))
+            Else
+                NoSiteSet = True
+            End If
+
+            ListBox2.Items.Add("BaseURI: " & BaseStr)
+
+            If Len(LBStr) > 1 Then
+                If DBRS.Fields(0).Value = LBStr Then ' Check that record matches URL checked = DOM
+                    DBRS.Fields(27).Value = STitleStr ' Title
+                    DBRS.Fields(28).Value = SDescStr ' Description
+                    DBRS.Fields(29).Value = SKeyWordStr ' Keywords
+                    DBRS.Fields(30).Value = BaseStr ' BaseURI
+                    DBRS.Update()
+                    'ListBox2.Items.Add(LBStr & " - " & CValStr)
+                    DOMCATTxt.Text = STitleStr
+                End If
+            End If
+            Await Me.WV.CoreWebView2.Profile.ClearBrowsingDataAsync()
+
+        Else
+
+            If VBStop = True Then
+                Timer1.Enabled = False
+                Exit Sub
+            End If
+            If T2Go = False Then Exit Sub
+
+            If SkipI > 2 Then
+                PauseCHK.Checked = True
+                Exit Sub
+            End If
+
+            If PauseCHK.Checked = True Then
+                Exit Sub
+            End If
+
+            If CatCheckEngineStr = "Symantec" Then
+                If T2Go = True Then Timer1.Enabled = False
+                If e.IsSuccess Then
+                    If Me.WV.CoreWebView2.Source = URLStr Then
+
+                        'Dim sHTML As String = Await WV.ExecuteScriptAsync("document.querySelector('span.clickable-category').innerText;")  ' Works for Symantec
+                        CValStr = "null"
+                        WCValStr = "null"
+                        UNURLStr = "null"
+                        ReURLStr = "null"
+                        Do While CValStr = "null"
+                            CValStr = Await WV.ExecuteScriptAsync("document.querySelector('form#submissionForm.ng-untouched.ng-pristine.ng-invalid.ng-star-inserted').childNodes[2].innerText;")
+                            UNURLStr = Await WV.ExecuteScriptAsync("document.querySelector('p.search-result').innerText;")
+                            ReURLStr = Await WV.ExecuteScriptAsync("document.querySelector('span.suggestion.ng-star-inserted').textContent;")
+
+                            CValStr = CValStr.Trim(Chr(34))
+                            UNURLStr = UNURLStr.Trim(Chr(34))
+                            ReURLStr = ReURLStr.Trim(Chr(34))
+
+                            If UNURLStr = "This URL has not yet been rated\nSince this URL has not yet been rated, please fill out the form below so we can add it to our database." Then
+                                CValStr = "UNKNOWN"
+                            End If
+                            If ReURLStr = " The URL you entered is a URL shortening service, which redirects to: Check Category" Then
+                                CValStr = "REDIRECT"
+                            End If
+                        Loop
+
+                        If InStr(CValStr, "\n") Then
+                            MCVal = Split(CValStr, "\n")
+                            CValStr = MCVal(1)
+                        End If
+
+                        If Len(LBStr) > 1 Then
+                            If DBRS.Fields(1).Value = LBStr Then ' Check that record matches URL checked = DOM
+                                DBRS.Fields(3).Value = CValStr ' BCCAT = Category String
+                                DBRS.Fields(10).Value = LBStr ' TDOM
+                                DBRS.Update()
+                                ListBox2.Items.Add(LBStr & " - " & CValStr)
+                                DOMCATTxt.Text = LBStr & " - " & CValStr
+                                SkipI = 0
+                            End If
+                        End If
+                        Await Me.WV.CoreWebView2.Profile.ClearBrowsingDataAsync()
+                    End If
+                End If
+                If T2Go = True Then Timer1.Enabled = True
+            End If
+
+
+            If CatCheckEngineStr = "McAfee" Then
+                If T2Go = True Then Timer1.Enabled = False
+                If e.IsSuccess Then
+                    If Me.WV.CoreWebView2.Source = URLStr & "en/feedback/url" Then
+                        CValStr = "null"
+                        Do While CValStr = "null"
+                            CValStr = Await WV.ExecuteScriptAsync("document.querySelector('table.result-table').innerText;")
+                            CValStr = CValStr.Trim(Chr(34))
+                        Loop
+
+                        If InStr(CValStr, "Uncategorized URL") Then
+                            CValStr = "UNCATEGORIZED URL"
+                        End If
+
+                        If InStr(CValStr, "URL not valid") Then
+                            CValStr = "UNCATEGORIZED URL"
+                        End If
+
+                        If InStr(CValStr, "\t") Then
+                            MCVal = Split(CValStr, "\t")
+                            CValStr = MCVal(7)
+                        End If
+
+
+                        If InStr(CValStr, "\n") Then
+                            Dim MAI As Integer, SplitStr2 As String, SplitArray2
+                            MCVal = Split(CValStr, "\n")
+                            SplitStr2 = ""
+
+                            For MAI = 0 To UBound(MCVal) - 1
+                                If InStr(CValStr, "- ") Then
+                                    SplitArray2 = Split(MCVal(MAI), "- ")
+                                    If Len(SplitStr2) < 2 Then
+                                        SplitStr2 = SplitArray2(1)
+                                    Else
+                                        SplitStr2 = SplitStr2 & ", " & SplitArray2(1)
+                                    End If
+                                End If
+                            Next
+                            CValStr = SplitStr2
+                        End If
+
+                        If Len(LBStr) > 1 Then
+                            If DBRS.Fields(1).Value = LBStr Then ' Check that record matches URL checked = DOM
+                                DBRS.Fields(4).Value = CValStr ' MANCAT = Category String
+                                DBRS.Fields(10).Value = LBStr ' TDOM
+                                DBRS.Update()
+                                ListBox2.Items.Add(LBStr & " - " & CValStr)
+                                DOMCATTxt.Text = LBStr & " - " & CValStr
+                                SkipI = 0
+                            End If
+                        End If
+                        Await Me.WV.CoreWebView2.Profile.ClearBrowsingDataAsync()
+                    End If
+                End If
+                If T2Go = True Then Timer1.Enabled = True
+
+            End If
+
+            If CatCheckEngineStr = "PaloAlto" Then
+                'If T2Go = True Then Timer1.Enabled = False  ' must be REM out because of captcha for palo alto check
+                If e.IsSuccess Then
+                    If Me.WV.CoreWebView2.Source = URLStr & "query/" Then
+                        CValStr = "null"
+                        Do While CValStr = "null"
+                            CValStr = Await WV.ExecuteScriptAsync("document.querySelector('ul.list-unstyled.query-result-ul').childNodes[5].innerText;")
+                            CValStr = CValStr.Trim(Chr(34))
+                        Loop
+
+                        If InStr(CValStr, ": ") Then
+                            MCVal = Split(CValStr, ": ")
+                            CValStr = MCVal(1)
+                        End If
+
+                        If Len(LBStr) > 1 Then
+                            If DBRS.Fields(1).Value = LBStr Then ' Check that record matches URL checked = DOM
+                                DBRS.Fields(5).Value = CValStr ' PACAT = Category String
+                                DBRS.Fields(10).Value = LBStr ' TDOM
+                                DBRS.Update()
+                                ListBox2.Items.Add(LBStr & " - " & CValStr)
+                                DOMCATTxt.Text = LBStr & " - " & CValStr
+                                SkipI = 0
+                            End If
+                        End If
+                        Await Me.WV.CoreWebView2.Profile.ClearBrowsingDataAsync()
+                    End If
+                End If
+                'If T2Go = True Then Timer1.Enabled = True  ' must be REM out because of captcha for palo alto check
+            End If
+
+            If CatCheckEngineStr = "Fortinet" Then
+                If T2Go = True Then Timer1.Enabled = False
+                If e.IsSuccess Then
+                    If Me.WV.CoreWebView2.Source = URLStr Then
+                        CValStr = "null"
+                        Do While CValStr = "null" Or CValStr Like "Latest Web Filter Databases*"
+                            CValStr = Await WV.ExecuteScriptAsync("document.querySelector('section.ency_content').childNodes[3].innerText;")
+                            CValStr = CValStr.Trim(Chr(34))
+
+                            If CValStr Like "Latest Web Filter Databases*" Then
+
+                            End If
+                        Loop
+
+                        If InStr(CValStr, "\n") Then
+                            MCVal = Split(CValStr, "\n")
+                            CValStr = MCVal(0)
+                        End If
+
+                        If InStr(CValStr, ": ") Then
+                            MCVal = Split(CValStr, ": ")
+                            CValStr = MCVal(1)
+                        End If
+
+                        If Len(LBStr) > 1 Then
+                            If DBRS.Fields(1).Value = LBStr Then ' Check that record matches URL checked = DOM
+                                DBRS.Fields(6).Value = CValStr ' FNCAT = Category String
+                                DBRS.Fields(10).Value = LBStr ' TDOM
+                                DBRS.Update()
+                                ListBox2.Items.Add(LBStr & " - " & CValStr)
+                                DOMCATTxt.Text = LBStr & " - " & CValStr
+                                SkipI = 0
+                            End If
+                        End If
+                        Await Me.WV.CoreWebView2.Profile.ClearBrowsingDataAsync()
+                    End If
+                End If
+                If T2Go = True Then Timer1.Enabled = True
+
+            End If
+
+            If CatCheckEngineStr = "Zscaler" Then
+                'If T2Go = True Then Timer1.Enabled = False
+                If e.IsSuccess Then
+                    If Me.WV.CoreWebView2.Source = URLStr Then
+                        CValStr = "null"
+                        Do While CValStr = "null"
+                            CValStr = Await WV.ExecuteScriptAsync("document.querySelector('tbody').childNodes[0].innerText;")
+                            CValStr = CValStr.Trim(Chr(34))
+                        Loop
+
+                        If InStr(CValStr, "\t") Then
+                            MCVal = Split(CValStr, "\t")
+                            CValStr = MCVal(1)
+                        End If
+
+                        If Len(LBStr) > 1 Then
+                            If DBRS.Fields(1).Value = LBStr Then ' Check that record matches URL checked = DOM
+                                DBRS.Fields(7).Value = CValStr ' ZCAT = Category String
+                                DBRS.Fields(10).Value = LBStr ' TDOM
+                                DBRS.Update()
+                                ListBox2.Items.Add(LBStr & " - " & CValStr)
+                                DOMCATTxt.Text = LBStr & " - " & CValStr
+                                SkipI = 0
+                            End If
+                        End If
+                        Await Me.WV.CoreWebView2.Profile.ClearBrowsingDataAsync()
+                    End If
+                End If
+                'If T2Go = True Then Timer1.Enabled = True
+            End If
+
+            If CatCheckEngineStr = "Cyren" Then
+                If T2Go = True Then Timer1.Enabled = False
+                If e.IsSuccess Then
+                    If Me.WV.CoreWebView2.Source = URLStr Then
+                        CValStr = "null"
+                        Do While CValStr = "null"
+                            CValStr = Await WV.ExecuteScriptAsync("document.querySelector('section.ency_content').childNodes[3].innerText;")
+                            CValStr = CValStr.Trim(Chr(34))
+                        Loop
+
+                        If InStr(CValStr, "\n") Then
+                            MCVal = Split(CValStr, "\n")
+                            CValStr = MCVal(0)
+                        End If
+
+                        If InStr(CValStr, ": ") Then
+                            MCVal = Split(CValStr, ": ")
+                            CValStr = MCVal(1)
+                        End If
+
+                        If Len(LBStr) > 1 Then
+                            If DBRS.Fields(1).Value = LBStr Then ' Check that record matches URL checked = DOM
+                                DBRS.Fields(8).Value = CValStr ' CYRENCAT = Category String
+                                DBRS.Fields(10).Value = LBStr ' TDOM
+                                DBRS.Update()
+                                ListBox2.Items.Add(LBStr & " - " & CValStr)
+                                DOMCATTxt.Text = LBStr & " - " & CValStr
+                                SkipI = 0
+                            End If
+                        End If
+                        Await Me.WV.CoreWebView2.Profile.ClearBrowsingDataAsync()
+                    End If
+                End If
+                If T2Go = True Then Timer1.Enabled = True
+
+            End If
+
+        End If
+
+        SkipITxt.Text = SkipI
+
+    End Sub
+
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+
+        If VBStop = True Then
+            Timer1.Enabled = False
+            'Timer2.Enabled = False
+            Exit Sub
+        End If
+
+        If SkipI > 2 Then
+            PauseCHK.Checked = True
+            Exit Sub
+        End If
+
+        If PauseCHK.Checked = True Then
+            Exit Sub
+        End If
+
+        If CI = 1 Then
+            If DBRS.EOF = True Or Len(DBRS.Fields(1).Value) < 2 Then
+                Exit Sub
+            Else
+                'LBStr = ListBox1.Items(I)
+                LBStr = DBRS.Fields(1).Value ' URL value without HTTP prefix AKA DOM
+                DOMTxt.Text = LBStr
+                If CatCheckEngineStr = "Symantec" Then
+                    URLStr = "https://sitereview.bluecoat.com/#/lookup-result/" & LBStr
+                End If
+
+                If CatCheckEngineStr = "McAfee" Then
+                    URLStr = "https://sitelookup.mcafee.com/"  '"https://sitelookup.mcafee.com/en/feedback/url"
+                End If
+
+                If CatCheckEngineStr = "Fortinet" Then
+                    URLStr = "https://www.fortiguard.com/webfilter"
+                End If
+
+                If CatCheckEngineStr = "ZscalerCHK" Then
+                    URLStr = "https://sitereview.zscaler.com/"
+                End If
+
+                If CatCheckEngineStr = "Cyren" Then
+                    URLStr = "https://www.cyren.com/security-center/url-category-check-gate"
+                End If
+
+                If CatCheckEngineStr = "McAfee" And MAPSet = True Then
+                    'nothing
+                Else
+                    Me.WV.Source = New Uri(URLStr)
+                End If
+
+            End If
+        End If
+
+
+        'Windows.Forms.Cursor.Position = New Point(Me.Left + TextBox5.Text, Me.Top + TextBox6.Text)
+        'mouse_event(&H2, 0, 0, 0, 0)
+        'mouse_event(&H4, 0, 0, 0, 0)
+        '180x510 = palo alto search box
+        '180x600 = palo alto check box
+        '1150x510 = palo alto search button
+        '150x535 = zscaler search box
+        '125x615 = zscaler search button
+        '700x575 = Cyren search box
+        '850x650 = Cyren search button
+
+        If CI = 2 Then
+            WV.Select()
+
+            If CatCheckEngineStr = "Symantec" Then
+                Windows.Forms.Cursor.Position = New Point(Me.Left + 75, Me.Top + 605) ' move mouse to symantech search box
+                mouse_event(&H2, 0, 0, 0, 0) ' mouse click down
+                mouse_event(&H4, 0, 0, 0, 0) ' mouse click up
+                SendKeys.Send("^a")
+                SendKeys.Send(LBStr)
+                Windows.Forms.Cursor.Position = New Point(Me.Left + 750, Me.Top + 605) ' move mouse to symantech search button
+                mouse_event(&H2, 0, 0, 0, 0)
+                mouse_event(&H4, 0, 0, 0, 0)
+            End If
+
+            If CatCheckEngineStr = "McAfee" Then
+                If Timer2.Enabled = True Then Exit Sub
+                If MAPSet = False Then
+                    Timer2.Enabled = True
+                    Exit Sub
+                Else
+                    'Timer2.Enabled = False
+                    'MAPSet = False
+                End If
+                'Windows.Forms.Cursor.Position = New Point(Me.Left + 200, Me.Top + 580) ' move mouse to mcafee product list box
+                'mouse_event(&H2, 0, 0, 0, 0)
+                'mouse_event(&H4, 0, 0, 0, 0)
+                'Windows.Forms.Cursor.Position = New Point(Me.Left + 200, Me.Top + 688) ' move mouse to mcafee product
+                'mouse_event(&H2, 0, 0, 0, 0)
+                'mouse_event(&H4, 0, 0, 0, 0)
+                Windows.Forms.Cursor.Position = New Point(Me.Left + 200, Me.Top + 645) ' move mouse to mcafee search box
+                mouse_event(&H2, 0, 0, 0, 0)
+                mouse_event(&H4, 0, 0, 0, 0)
+                SendKeys.Send("^a")
+                SendKeys.Send(LBStr)
+                'Windows.Forms.Cursor.Position = New Point(Me.Left + 180, Me.Top + 700) ' move mouse to mcafee search button
+                'mouse_event(&H2, 0, 0, 0, 0)
+                'mouse_event(&H4, 0, 0, 0, 0)
+            End If
+
+
+            If CatCheckEngineStr = "PaloAlto" Then
+                If AutoCHK.Checked = False Then
+                    ResumeCHK.Checked = False
+                Else
+                    ResumeCHK.Checked = True
+                End If
+                Windows.Forms.Cursor.Position = New Point(Me.Left + 180, Me.Top + 510) ' move mouse to palo alto search box
+                mouse_event(&H2, 0, 0, 0, 0)
+                mouse_event(&H4, 0, 0, 0, 0)
+                SendKeys.Send("^a")
+                SendKeys.Send(LBStr)
+                Windows.Forms.Cursor.Position = New Point(Me.Left + 180, Me.Top + 600) ' move mouse to palo alto captcha button
+                mouse_event(&H2, 0, 0, 0, 0)
+                mouse_event(&H4, 0, 0, 0, 0)
+            End If
+
+            If CatCheckEngineStr = "Fortinet" Then
+                'Windows.Forms.Cursor.Position = New Point(Me.Left + 370, Me.Top + 510) ' move mouse to fortinet search box ' old location
+                Windows.Forms.Cursor.Position = New Point(Me.Left + 380, Me.Top + 550) ' move mouse to fortinet search box
+                mouse_event(&H2, 0, 0, 0, 0)
+                mouse_event(&H4, 0, 0, 0, 0)
+                SendKeys.Send("^a")
+                SendKeys.Send(LBStr)
+                'Windows.Forms.Cursor.Position = New Point(Me.Left + 650, Me.Top + 510) ' move mouse to fortinet search button ' old location
+                Windows.Forms.Cursor.Position = New Point(Me.Left + 650, Me.Top + 550) ' move mouse to fortinet search button
+                mouse_event(&H2, 0, 0, 0, 0)
+                mouse_event(&H4, 0, 0, 0, 0)
+            End If
+
+            If CatCheckEngineStr = "Zscaler" Then
+                Windows.Forms.Cursor.Position = New Point(Me.Left + 700, Me.Top + 575) ' move mouse to zscaler search box
+                mouse_event(&H2, 0, 0, 0, 0) ' mouse click down
+                mouse_event(&H4, 0, 0, 0, 0) ' mouse click up
+                SendKeys.Send("^a")
+                SendKeys.Send(LBStr)
+                Windows.Forms.Cursor.Position = New Point(Me.Left + 850, Me.Top + 650) ' move mouse to zscaler search button
+                mouse_event(&H2, 0, 0, 0, 0)
+                mouse_event(&H4, 0, 0, 0, 0)
+            End If
+
+            If CatCheckEngineStr = "Cyren" Then
+                Windows.Forms.Cursor.Position = New Point(Me.Left + 75, Me.Top + 605) ' move mouse to cyren search box
+                mouse_event(&H2, 0, 0, 0, 0) ' mouse click down
+                mouse_event(&H4, 0, 0, 0, 0) ' mouse click up
+                SendKeys.Send("^a")
+                SendKeys.Send(LBStr)
+                Windows.Forms.Cursor.Position = New Point(Me.Left + 750, Me.Top + 605) ' move mouse to cyren search button
+                mouse_event(&H2, 0, 0, 0, 0)
+                mouse_event(&H4, 0, 0, 0, 0)
+            End If
+            SkipI = SkipI + 1
+        End If
+
+        If CI = 3 Then
+            If CatCheckEngineStr = "Symantec" Then
+                Me.WV.CoreWebView2.Navigate(URLStr)
+            End If
+
+            If CatCheckEngineStr = "PaloAlto" Then
+                If ResumeCHK.Checked = False Then
+                    Exit Sub
+                End If
+                Windows.Forms.Cursor.Position = New Point(Me.Left + 1150, Me.Top + 510) ' move mouse to palo alto search button
+                mouse_event(&H2, 0, 0, 0, 0)
+                mouse_event(&H4, 0, 0, 0, 0)
+            End If
+
+            If CatCheckEngineStr = "McAfee" Then
+                'SendKeys.Send(LBStr)
+
+                Windows.Forms.Cursor.Position = New Point(Me.Left + 180, Me.Top + 700) ' move mouse to mcafee search button
+                mouse_event(&H2, 0, 0, 0, 0)
+                mouse_event(&H4, 0, 0, 0, 0)
+            End If
+
+        End If
+
+        If CI = 4 Then
+            If DBRS.EOF = True Or Len(DBRS.Fields(1).Value) < 2 Then
+                Exit Sub
+            Else
+                CI = 0
+                I = I + 1
+                DBRS.MoveNext()
+                TryCountTxt.Text = I
+                UpdateCountTxt.Text = ListBox2.Items.Count
+                ListBox2.SelectedIndex = ListBox2.Items.Count - 1
+                SkipITxt.Text = SkipI
+            End If
+        End If
+
+        If I = 2501 Then
+            Timer1.Enabled = False
+        End If
+
+        CI = CI + 1
+
+    End Sub
+
+End Class
